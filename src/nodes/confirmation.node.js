@@ -22,12 +22,12 @@ export async function confirmationNode(state) {
     state.userName = limpieza
 
     //Clasificar
-    const templateClass = Handlebars.compile(PROMPT_TEMPLATES.clasificaTexto.user);
+    /*const templateClass = Handlebars.compile(PROMPT_TEMPLATES.clasificaTexto.user);
     const mensaje = state.incidencia;
     const USERCLASS = templateClass({ mensaje });
     const responseclass = await invokeClaude(USERCLASS, PROMPT_TEMPLATES.clasificaTexto.system);
-    const result = JSON.parse(responseclass);
-    if (result.isOtro) {
+    const result = JSON.parse(responseclass);*/
+    if (state.typeclass==='otro') {
       return {
         ...state,
         step: END,
@@ -37,9 +37,8 @@ export async function confirmationNode(state) {
       };
     }
     let type = 'Incidencia';
-    if (result.isOperativa) {
+    if (state.typeclass==='reclamos'||state.typeclass==='servicios_internos'||state.typeclass==='informacion'||state.typeclass==='operacional') {
       type = 'Operativa';
-      state.typeclass = 'OPERATIVA'
     }
 
     let typelocal = 'Local';

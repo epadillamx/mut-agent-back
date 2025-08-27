@@ -83,9 +83,10 @@ export async function extractorNode(state) {
         try {
           const result_incidencia = JSON.parse(response);
           logger.debug("extractInfo", JSON.stringify(result_incidencia, null, 2));
-          if (result_incidencia.incidencia.length != 0) {
-            result.incidencia = result_incidencia.incidencia;
+          if (result_incidencia.texto.length != 0) {
+            result.incidencia = result_incidencia.texto;
             result.isUrgente = result_incidencia.isUrgente;
+            state.typeclass = result_incidencia.categoria;
           }
         } catch (error) {
           logger.warn("No existe incidencia");
