@@ -44,10 +44,12 @@ export async function orquestadorcambioNode(state) {
     try {
       const result_incidencia = JSON.parse(responseincidencia);
       logger.debug("extractInfo", JSON.stringify(result_incidencia, null, 2));
-      if (result_incidencia.incidencia != null) {
-        if (state.incidencia !== result_incidencia.incidencia) {
-          state.incidencia = result_incidencia.incidencia;
+      if (result_incidencia.texto != null) {
+        if (state.incidencia !== result_incidencia.texto) {
+          logger.debug("HAY CAMBIO DE INCIDENCIA");
+          state.incidencia = result_incidencia.texto;
           state.isUrgente = result_incidencia.isUrgente;
+          state.typeclass = result_incidencia.categoria;
           updatedate = true;
         }
       }
@@ -75,7 +77,6 @@ export async function orquestadorcambioNode(state) {
     const responselocal = await invokeClaude(USER_LOCAL, PROMPT_TEMPLATES.extractLocal.system);
     try {
       const resultlocal = JSON.parse(responselocal);
-      logger.debug(resultlocal)
       logger.debug("extractLocal", JSON.stringify(resultlocal, null, 2));
       if (resultlocal.userLocal != null) {
         if (resultlocal.userLocal !== state.userLocal) {
@@ -96,6 +97,7 @@ export async function orquestadorcambioNode(state) {
     //
 
     if (updatedate) {
+      logger.debug("HAY CAMBIO DE DATOS")
       return {
         ...state,
         step: STEPS.VALIDATE,

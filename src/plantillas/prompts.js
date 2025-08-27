@@ -37,35 +37,148 @@ Responde ÚNICAMENTE con este formato JSON:
             </contexto>
             <definiciones>
                 <categoria>
-                    <nombre>Incidencia</nombre>
-                    <descripcion>Cualquier evento o problema que interrumpe la operación normal y requiere una acción correctiva. Son reportes de algo que está mal.</descripcion>
-                    <ejemplos>
-                      - "Hay una fuga de agua en los baños del segundo piso."
-                      - "Se cortó la luz en la tienda Pandora."
-                      - "Una de las escaleras mecánicas no funciona."
-                      - "Alerta de seguridad en el estacionamiento."
-                    </ejemplos>
+                  <nombre>reclamos</nombre>
+                  <descripcion>
+                    Cualquier problema, falla o incidencia que afecta las condiciones normales de funcionamiento de los locales e instalaciones, requiriendo intervención para su solución. Son reportes de situaciones que están causando molestias, interrupciones operativas o deterioro en la experiencia de locatarios y usuarios.
+                  </descripcion>
+                  <ejemplos>
+                    - "Hay una filtración de agua en el techo del local."
+                    - "Se cortó la energía eléctrica de manera no programada."
+                    - "El aire acondicionado no funciona correctamente."
+                    - "Hay mal olor en la zona de la tienda."
+                    - "No hay suministro de gas en el local."
+                    - "Los extractores de ventilación no están funcionando."
+                    - "Hay ruidos molestos provenientes de locales vecinos."
+                    - "La iluminación interior de la tienda no funciona."
+                    - "La temperatura del local está demasiado baja."
+                    - "Hay goteo en el techo del establecimiento."
+                    - "Personas no autorizadas ingresan a áreas restringidas."
+                    - "Hay problemas de suciedad en las instalaciones."
+                    - "La calefacción del local está apagada."
+                    - "Las cortinas de seguridad están bloqueadas."
+                    - "Hay presencia de plagas en las áreas comunes."
+                    - "Falta papel higiénico en los baños."
+                    - "El sistema de portal web no está funcionando."
+                    - "Hay olores tóxicos por trabajos de pintura."
+                  </ejemplos>
+                </categoria>
+                <categoria>
+                  <nombre>servicios_internos</nombre>
+                  <descripcion>
+                      Solicitudes relacionadas con procesos administrativos, sistemas internos y trámites operativos que requieren gestión o apoyo del centro comercial. Son requerimientos de servicios que facilitan la operación diaria de los locatarios.
+                  </descripcion>
+                  <ejemplos>
+                      - "Solicitud de reapertura de ventas para el período actual."
+                      - "Necesito registrar las ventas del mes en el sistema."
+                      - "Requiero aprobación de permisos para ingreso de mercadería."
+                      - "Solicitud de cierre de mes en el sistema contable."
+                      - "Necesito generar una factura electrónica en el sistema."
+                      - "Requiero carga masiva de ventas en la plataforma."
+                      - "Solicitud de información sobre permisos pendientes."
+                      - "Necesito acceso a los casilleros del personal."
+                      - "Requiero realizar un test en el sistema de ventas."
+                      - "Solicitud de procesamiento de documento tributario."
+                  </ejemplos>
+                </categoria>
+                <categoria>
+                  <nombre>operacional</nombre>
+                  <descripcion>
+                      Solicitudes relacionadas con tareas operativas rutinarias, gestión de residuos, enrolamientos de personal, suministros básicos y servicios de apoyo necesarios para el funcionamiento diario de los locales. Son requerimientos de servicios operativos que mantienen la operación normal del negocio.
+                  </descripcion>
+                  <ejemplos>
+                      - "Solicitud de retiro de basura y reciclaje del local."
+                      - "Necesito enrolamiento biométrico para nuevo personal."
+                      - "Requiero bolsas de basura para el establecimiento."
+                      - "Solicitud de contenedor para trampa de grasa."
+                      - "Necesito limpieza de vidrios del local."
+                      - "Requiero retiro de cartón acumulado."
+                      - "Solicitud de baldes para residuos orgánicos."
+                      - "Necesito suministro de gas para el local."
+                      - "Requiero enrolamiento de colaborador en el sistema."
+                      - "Solicitud de retiro de aceite usado de cocina."
+                      - "Necesito reposición de insumos de limpieza."
+                      - "Requiero activación de acceso a casilleros del personal."
+                      - "Solicitud de arreglo de sistema contra incendios."
+                      - "Necesito préstamo de herramientas básicas."
+                      - "Requiero fin de contrato de empleado en el sistema."
+                  </ejemplos>
+                </categoria>
+                <categoria>
+                  <nombre>informacion</nombre>
+                  <descripcion>
+                      Consultas, solicitudes de información general y comunicaciones sobre procedimientos, horarios, servicios disponibles, trámites administrativos y políticas del centro comercial. Son requerimientos de orientación e información que no requieren acción correctiva inmediata.
+                  </descripcion>
+                  <ejemplos>
+                      - "Consulta sobre horario de apertura del centro comercial."
+                      - "Solicitud de información sobre credenciales de trabajador."
+                      - "Consulta sobre acceso de proveedores al edificio."
+                      - "Información sobre horarios de lockers para personal."
+                      - "Consulta sobre descuentos MUT para empleados."
+                      - "Información sobre facturas de servicios básicos."
+                      - "Consulta sobre horarios especiales por días feriados."
+                      - "Solicitud de información sobre tarjeta virtual de beneficios."
+                      - "Consulta sobre procedimientos de limpieza de vitrinas."
+                      - "Información sobre conexión a internet en el local."
+                      - "Consulta sobre permisos para trabajos nocturnos."
+                      - "Información sobre desvinculación de trabajadores."
+                      - "Consulta sobre horarios de cierre por eventos especiales."
+                      - "Solicitud de información sobre objetos perdidos."
+                      - "Consulta sobre instalación de mobiliario en tienda."
+                  </ejemplos>
+                </categoria>
+                <categoria>
+                  <nombre>incidencia</nombre>
+                  <descripcion>Cualquier problema, falla o incidencia que afecta las condiciones normales de funcionamiento de los locales e instalaciones, requiriendo intervención inmediata o programada para restablecer las operaciones. Son reportes de situaciones que están causando molestias, interrupciones operativas, daños o deterioro en la experiencia de locatarios y usuarios.</descripcion>
+                  <ejemplos>
+                      - "Hay una filtración de agua en el techo del local."
+                      - "Se cortó la energía eléctrica de manera no programada."
+                      - "El aire acondicionado no funciona correctamente."
+                      - "Hay mal olor en la zona de la tienda."
+                      - "No hay suministro de gas en el local."
+                      - "Los extractores de ventilación no están funcionando."
+                      - "Hay ruidos molestos provenientes de locales vecinos."
+                      - "La iluminación interior de la tienda no funciona."
+                      - "La temperatura del local está demasiado baja."
+                      - "Hay goteo en el techo del establecimiento."
+                      - "Personas no autorizadas ingresan a áreas restringidas."
+                      - "Hay problemas de suciedad en las instalaciones."
+                      - "La calefacción del local está apagada."
+                      - "Las cortinas de seguridad están bloqueadas."
+                      - "Hay presencia de plagas en las áreas comunes."
+                      - "Falta papel higiénico en los baños."
+                      - "El sistema de portal web no está funcionando."
+                      - "Hay olores tóxicos por trabajos de pintura."
+                      - "La puerta de emergencia no abre correctamente."
+                      - "Hay invasión de mosquitos en las áreas comunes."
+                  </ejemplos>
+                </categoria>
+                <categoria>
+                      <nombre>otro</nombre>
+                      <descripcion>Cualquier mensaje que no corresponda a incidencias, solicitudes operacionales, servicios internos o consultas de información relacionadas con el centro comercial. Incluye conversaciones generales, preguntas no relacionadas con las operaciones del edificio, saludos, consultas externas al contexto comercial y cualquier comunicación que esté fuera del ámbito de gestión del centro comercial.</descripcion>
+                      <ejemplos>
+                          - "Hola, ¿cómo estás?"
+                          - "¿Cuál es la capital de Francia?"
+                          - "Recomiéndame una película para el fin de semana."
+                          - "¿Qué opinas sobre el clima de hoy?"
+                          - "Necesito ayuda con mi tarea de matemáticas."
+                          - "¿Conoces algún buen restaurante en otra ciudad?"
+                          - "Cuéntame un chiste."
+                          - "¿Cómo se hace una receta de pasta?"
+                          - "¿Qué significa esta palabra en inglés?"
+                          - "Buenos días, que tengas un buen día."
+                          - "¿Podrías explicarme cómo funciona la inteligencia artificial?"
+                          - "Gracias por todo."
+                      </ejemplos>
                   </categoria>
-                  <categoria>
-                    <nombre>Pregunta Operativa</nombre>
-                    <descripcion>Una solicitud de información sobre el funcionamiento, servicios, horarios o eventos del centro comercial.</descripcion>
-                    <ejemplos>
-                      - "¿A qué hora cierran hoy?"
-                      - "¿Dónde hay un cajero automático?"
-                      - "¿Qué eventos hay para niños este fin de semana?"
-                      - "¿Tienen servicio de Wi-Fi gratuito?"
-                      - "¿Venden zapatillas?"
-                    </ejemplos>
-                  </categoria>
-              <definiciones>
+              </definiciones>
             `,
 
     user: `Extrae la incidencia o pregunta operativa y valida si la incidencia es urgente del siguiente texto:
           "{{input}}"
-
           Responde ÚNICAMENTE con este formato JSON:
           {
-            "incidencia": "(incidencia o Pregunta Operativa encontrada y mejora la descripcion)  o null si no se encuentra en esta categorización.",
+            "texto": "mejora el texto en base a la categoria  que pertenece y mejora la redaccion",
+            "categoria": "retornar la categoria que pertenece el texto solo pueden ser reclamos,servicios_internos,operacional,otro,incidencia,informacion",
             "isUrgente": "coloca Urgente si la incidecnia es urgente , colocar Media si la indecia esta controlada , colocar Normal si no es urgente ni controlada"
           }`
   },
