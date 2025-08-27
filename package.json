@@ -1,6 +1,6 @@
 {
   "name": "ticket-support-system",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Sistema de soporte con chatbot usando LangGraph y AWS Bedrock",
   "type": "module",
   "main": "src/server.js",
