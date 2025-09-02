@@ -41,33 +41,36 @@ export async function orquestadorNonde(state) {
     const incidenciaChanged = state.incidencia.length != 0;
     const localChanged = state.userLocal.length != 0;
 
+
+    //validar si es un saludo
+    logger.debug("Cantidad ::");
+    logger.debug(state.conversationHistory.length);
+    if (state.conversationHistory.length == 1) {
+      logger.debug("**********SALUDO*********");
+
+      const template = Handlebars.compile(PROMPT_TEMPLATES.validateGreetings.user);
+      const USER_SALUDO = template({ mensaje });
+      const response_saludo = await invokeClaude(USER_SALUDO, PROMPT_TEMPLATES.validateGreetings.system);
+      const result_saludo = JSON.parse(response_saludo);
+      logger.warn(JSON.stringify(result_saludo, null, 2));
+      if (result_saludo?.categoria === 'saludo' || result_saludo?.categoria === 'ayuda') {
+
+        const templateSaludos = Handlebars.compile(PROMPT_TEMPLATES.mensajeBienvenida.user);
+        const USER = templateSaludos({ mensaje });
+        const response = await invokeClaude(USER, PROMPT_TEMPLATES.mensajeBienvenida.system);
+        return {
+          ...state,
+          step: END,
+          laststep: STEPS.FALTANTE,
+          lastResponse: response
+        };
+      }
+    }
+
+
+
     if (userNameChanged && userEmailChanged && incidenciaChanged && localChanged && TIPO_ERROR.DOBLE !== state.tipo_error && state.conversationHistory.length > 1) {
 
-      /*let valoreActuala = '';
-      if (state.userName.length != 0) {
-        valoreActuala += '- Nombre: ' + state.userName + '\n';
-      }
-      if (state.incidencia.length != 0) {
-        valoreActuala += '- Incidencia: ' + state.incidencia + '\n';
-      }
-      if (state.userLocal.length != 0) {
-        valoreActuala += '- Local: ' + state.userLocal + '\n';
-      }*/
-
-      //**** valodar si hay cambio de email
-      /*const extracEmail = extraerEmail(mensaje);
-      if (extracEmail.length != 0) {
-        if (extracEmail !== state.userEmail) {
-          return {
-            ...state,
-            userEmail: extracEmail,
-            tipo_error: TIPO_ERROR.CAMBIO_EMAIL,
-            step: STEPS.ORQUESTADOR_CAMBIO
-
-          }
-        }
-      }*/
-      //*** 
 
       // Validar confirmacion
       const template = Handlebars.compile(PROMPT_TEMPLATES.validateconfirmation.user);
@@ -184,11 +187,8 @@ export async function orquestadorNonde(state) {
     }*/
 
 
-    /*const template = Handlebars.compile(PROMPT_TEMPLATES.validateGreetings.user);
-    const USER_SALUDO = template({ mensaje });
-    const response_saludo = await invokeClaude(USER_SALUDO, PROMPT_TEMPLATES.validateGreetings.system);
-    const result_saludo = JSON.parse(response_saludo);
-    state.isMessagewelcome = result_saludo.isGreeting;*/
+
+
 
 
 
