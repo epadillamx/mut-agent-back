@@ -22,8 +22,8 @@ export async function saveticketNode(state) {
     let types_2_description = '';
     let clasificacion = null;
     let numero = 0;
-    if (state.typeclass === 'OPERATIVA') {
-      state.clasificacion = 'OPERATIVA';
+    if (state.typeclass==='reclamos'||state.typeclass==='servicios_internos'||state.typeclass==='informacion') {
+      state.clasificacion = 'SERVICIO';
     } else {
       clasificacion = await getClasificacion(state);
       types_description = clasificacion.nombre_nivel_3;
@@ -48,10 +48,12 @@ export async function saveticketNode(state) {
       user_type: 'HUMAN_RESOURCES',
     };
 
-    if (state.typeclass === 'OPERATIVA') {
+    if (state.typeclass==='reclamos'||state.typeclass==='servicios_internos'||state.typeclass==='informacion') {
+      logger.debug("=====SAVE ZENDESK=====");
       numero = -2;
       await createTicketDb(state, numero, 'Abierto');
     } else {
+      logger.debug("=====SAVE Fracttal=====");
       const fracttalService = new FracttalService(
         process.env.FRACTTAL_KEY,
         process.env.FRACTTAL_SECRET
