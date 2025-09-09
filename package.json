@@ -26,7 +26,8 @@
     "express": "^5.1.0",
     "handlebars": "^4.7.8",
     "pg": "^8.11.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "node-zendesk": "^2.2.0"
   },
   "engines": {
     "node": ">=18.0.0"

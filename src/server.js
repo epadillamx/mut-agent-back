@@ -5,6 +5,8 @@ import { checkBedrockStatus } from './config/bedrock.js';
 import dotenv from 'dotenv';
 import { sendMessage, MarkStatusMessage } from './controllers/send.message.js';
 import { accumulateMessage } from './services/acumulacion.js';
+import { zendeskTest } from './controllers/zendesk.controller.js';
+
 dotenv.config();
 
 const app = express();
@@ -203,6 +205,64 @@ app.get('/clean', (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
+
+
+app.post('/zendesk-test', async (req, res) => {
+  try {
+    const {
+      email: rawEmail,
+      nombre,
+      apellido,
+      tag,
+      tema,
+      cuerpo,
+      prod,             // true => producción; false => desarrollo
+      numeroContrato,   // nuevo
+      locatarioId,      // nuevo
+      log,              // opcional: true/false para activar/desactivar insert en log_ticket
+    } = req.body ?? {};
+
+    const email = String(rawEmail ?? '').trim().toLowerCase();
+
+    if (!email) {
+      return res.status(400).json({ error: 'email es requerido en el body' });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'email no tiene un formato válido' });
+    }
+
+    const useProdGroup =
+      prod === true || String(prod).toLowerCase() === 'true' || String(prod) === '1';
+
+    // Toggle de persistencia (defaults: true, o toma env si quieres)
+    const persistLog =
+      log === undefined
+        ? true
+        : (log === true || String(log).toLowerCase() === 'true' || String(log) === '1');
+
+    const respuesta = await zendeskTest(
+      email,
+      nombre,
+      apellido,
+      tag,
+      tema,
+      cuerpo,
+      useProdGroup,
+      numeroContrato,
+      locatarioId,
+      persistLog
+    );
+
+    return res.status(200).json(respuesta);
+  } catch (error) {
+    console.error('Error en POST /zendesk-test:', error);
+    return res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+
 
 // 404 handler
 app.use((req, res) => {
