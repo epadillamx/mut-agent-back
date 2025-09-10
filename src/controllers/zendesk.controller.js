@@ -30,7 +30,8 @@ export async function zendeskTest(
   // toggle para activar/desactivar el insert en la base de datos
   persistLog = true,
 ) {
-  logger.info('Procesando creación de ticket', { email, tag, useProdGroup });
+  nombre,
+  logger.info('Procesando creación de ticket', { email, nombre, apellido, tag, tema, cuerpo, useProdGroup,numeroContrato,locatarioId,persistLog });
 
   try {
     // 1) Resolver requesterId usando las funciones principales

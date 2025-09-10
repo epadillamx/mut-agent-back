@@ -1,10 +1,12 @@
 import * as zendesk from 'node-zendesk';
-import 'dotenv/config';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 //hay que pasar a .env
 const client = zendesk.createClient({
-  username: 'integrador@mut.cl',
-  token: 'mwaNfxfGUxqtiRppJcBVBpgKnUpPphij25m2JEim',
+  username: process.env.ZENDESK_USER,
+  token: process.env.ZENDESK_TOKEN,
   remoteUri: 'https://territoria.zendesk.com/api/v2',
 });
 

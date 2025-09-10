@@ -4,9 +4,11 @@ import { FracttalService } from '../services/apirest.js';
 import { END } from '@langchain/langgraph';
 import { createTicketDb } from '../services/database.service.js';
 import { CONSTANTES } from '../utils/constantes.js';
-import { getClasificacion } from '../services/save.ticket.service.js'
+import { getClasificacion, getClasificacionzendesk } from '../services/save.ticket.service.js'
 import dotenv from 'dotenv';
 import Handlebars from 'handlebars';
+import { zendeskTest } from '../controllers/zendesk.controller.js';
+
 dotenv.config();
 /**
  * Nodo de inicio - Saluda al usuario y solicita email
@@ -22,7 +24,7 @@ export async function saveticketNode(state) {
     let types_2_description = '';
     let clasificacion = null;
     let numero = 0;
-    if (state.typeclass==='reclamos'||state.typeclass==='servicios_internos'||state.typeclass==='informacion') {
+    if (state.typeclass === 'reclamos' || state.typeclass === 'servicios_internos' || state.typeclass === 'informacion') {
       state.clasificacion = 'SERVICIO';
     } else {
       clasificacion = await getClasificacion(state);
@@ -48,10 +50,25 @@ export async function saveticketNode(state) {
       user_type: 'HUMAN_RESOURCES',
     };
 
-    if (state.typeclass==='reclamos'||state.typeclass==='servicios_internos'||state.typeclass==='informacion') {
+    if (state.typeclass === 'reclamos' || state.typeclass === 'servicios_internos' || state.typeclass === 'informacion') {
       logger.debug("=====SAVE ZENDESK=====");
-      numero = -2;
+      clasificacion = await getClasificacionzendesk(state.incidencia);
+      const respuesta = await zendeskTest(
+        state.userEmail,
+        state.userName,
+        '-',
+        clasificacion.categoria,
+        state.isUrgente+'| Se Reporto (' + clasificacion.categoria + ')',
+        state.incidencia,
+        false,//False para desarrollo
+        null,
+        state.localId,
+        true // true para guardar en log_ticket
+      );
+      logger.debug(JSON.stringify(respuesta, null, 2));
+      numero = respuesta.ticketId;
       await createTicketDb(state, numero, 'Abierto');
+
     } else {
       logger.debug("=====SAVE Fracttal=====");
       const fracttalService = new FracttalService(
