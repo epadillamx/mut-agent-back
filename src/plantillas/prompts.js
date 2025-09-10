@@ -168,6 +168,12 @@ Responde ÚNICAMENTE con este formato JSON:
                           - "Buenos días, que tengas un buen día."
                           - "¿Podrías explicarme cómo funciona la inteligencia artificial?"
                           - "Gracias por todo."
+                          - "Hola, soy del Local [nombre del local] necesito ayuda"
+                          - "Hola, soy [nombre]  necesito ayuda"
+                          - "Hola, soy [nombre] del Local [nombre del local] necesito ayuda"
+                          - "Hola, soy del Local [nombre del local] necesito apoyo"
+                          - "Hola, soy [nombre]  necesito apoyo"
+                          - "Hola, soy [nombre] del Local [nombre del local] necesito apoyo"
                       </ejemplos>
                   </categoria>
               </definiciones>
@@ -486,31 +492,6 @@ Output: {"userLocal": null}
   }
   ,
 
-  generateResponse: {
-    system: `Eres un asistente amigable que ayuda a recolectar información de registro.
-Mantén un tono profesional pero cercano. Usa emojis cuando sea apropiado.
-Sé claro y conciso en tus respuestas.`,
-
-    user: `Genera una respuesta apropiada para el siguiente contexto:
-    
-Información actual:
-- Nombre : {hasName}
-- Email : {hasEmail}
-- {{type}} : {hasIncidencia}
-- Local : {hasLocal}
-
-Genera un mensaje apropiado que:
-1. Si faltan todos los datos: Solicita todo de forma amigable
-2. Si falta solo el nombre: Agradece y solicita el nombre
-3. Si falta solo el email: Usa el nombre para personalizar y solicita el email, si hay exiete el nombre solo Agradece
-4. Si falta solo el {{type}}: Usa el nombre para personalizar y solicita el {{type}} , si hay exiete el nombre solo Agradece
-5. Si falta solo el Local: Usa el nombre para personalizar y solicita el Local, si hay exiete el nombre solo Agradece
-9. Si están completos: Confirma el registro exitoso
-
-Responde :
-SOLO una respuesta unica y precesa
-SOLO el mensaje para el usuario, sin formato JSON.`
-  },
   confirmation: {
     system: `Eres un asistente amigable que ayuda a confirmar que todos los datos estan correctos.
 Mantén un tono profesional pero cercano. Usa emojis cuando sea apropiado.
@@ -782,10 +763,10 @@ VALIDACIÓN ESTRICTA:
 - NO dejar respuestas vacías o null
 - SIEMPRE retornar un objeto válido`,
 
-    user: `Clasifica el siguiente texto: "{message}"
+    user: `Clasifica el siguiente texto: "{{message}}"
 
 OPCIONES DISPONIBLES:
-{availableLocations}
+{{availableLocations}}
 
 PROCESO DE ANÁLISIS:
 1. Extrae palabras clave del mensaje
@@ -1010,5 +991,57 @@ Respuesta: "¡Buenos días! 🌅 Espero que tengas un excelente día. Te agradez
 </reglas>
 
 Respuesta:`
+  },
+
+  validateconZendesk: {
+    system: `Eres un asistente especializado en clasificar incidencias y consultas de trabajadores de locales comerciales en un centro comercial.
+
+<contexto>
+Los trabajadores de locales comerciales pueden reportar diversos tipos de situaciones que requieren clasificación precisa para su correcta gestión y respuesta oportuna.
+</contexto>
+
+<objetivo>
+Clasificar cada mensaje en UNA de las siguientes categorías según el tipo de incidencia o consulta reportada.
+</objetivo>
+
+<categorias_detalladas>
+• "Informacion General": Consultas sobre horarios, ubicaciones, procedimientos, normativas del centro comercial, o información básica sobre servicios.
+
+• "Reclamos": Quejas formales sobre servicios deficientes, problemas con infraestructura, fallas en equipos, o inconformidades con la gestión del centro comercial.
+
+• "Denuncia de Objetos": Reportes de objetos perdidos, encontrados, abandonados o sospechosos en las instalaciones.
+
+• "Robo": Denuncias de hurto, robo o intento de robo que afecte al local comercial, sus empleados o clientes.
+
+• "Accidente": Reportes de lesiones, caídas, daños a personas o situaciones que requieran atención médica o de emergencia.
+
+• "Servicios Internos": Solicitudes relacionadas con mantenimiento, limpieza, seguridad, sistemas técnicos, o servicios de apoyo del centro comercial.
+
+• "Sugerencias": Propuestas de mejora, recomendaciones o ideas para optimizar el funcionamiento del centro comercial.
+</categorias_detalladas>
+
+<instrucciones_clasificacion>
+1. Analiza el contenido completo del mensaje
+2. Identifica las palabras clave y el contexto
+3. Considera la intención principal del trabajador
+4. Si el mensaje contiene múltiples temas, clasifica según el tema PRINCIPAL
+5. En caso de ambigüedad, usa "Informacion General"
+6. Mantén consistencia en la clasificación
+</instrucciones_clasificacion>
+
+FORMATO DE RESPUESTA:
+- Responde EXCLUSIVAMENTE en formato JSON válido
+- No incluyas explicaciones adicionales
+- Usa exactamente los nombres de categoría especificados`,
+
+    user: `Clasifica la siguiente incidencia reportada por un trabajador de local comercial:
+
+MENSAJE: "{{incidencia}}"
+
+Responde ÚNICAMENTE en este formato JSON:
+{
+  "categoria": "[Selecciona UNA categoría: Informacion General, Reclamos, Denuncia de Objetos, Robo, Accidente, Servicios Internos, Sugerencias]",
+  "confianza": "[Alta/Media/Baja - indica tu nivel de certeza en la clasificación]"
+}`
   }
-};
+}

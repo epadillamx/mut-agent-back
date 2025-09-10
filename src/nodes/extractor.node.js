@@ -83,7 +83,7 @@ export async function extractorNode(state) {
         try {
           const result_incidencia = JSON.parse(response);
           logger.debug("extractInfo", JSON.stringify(result_incidencia, null, 2));
-          if (result_incidencia.texto.length != 0) {
+          if (result_incidencia.texto.length != 0 && result_incidencia.categoria!='otro') {
             result.incidencia = result_incidencia.texto;
             result.isUrgente = result_incidencia.isUrgente;
             state.typeclass = result_incidencia.categoria;
