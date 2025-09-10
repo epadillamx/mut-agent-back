@@ -168,6 +168,12 @@ Responde ÚNICAMENTE con este formato JSON:
                           - "Buenos días, que tengas un buen día."
                           - "¿Podrías explicarme cómo funciona la inteligencia artificial?"
                           - "Gracias por todo."
+                          - "Hola, soy del Local [nombre del local] necesito ayuda"
+                          - "Hola, soy [nombre]  necesito ayuda"
+                          - "Hola, soy [nombre] del Local [nombre del local] necesito ayuda"
+                          - "Hola, soy del Local [nombre del local] necesito apoyo"
+                          - "Hola, soy [nombre]  necesito apoyo"
+                          - "Hola, soy [nombre] del Local [nombre del local] necesito apoyo"
                       </ejemplos>
                   </categoria>
               </definiciones>
@@ -486,31 +492,6 @@ Output: {"userLocal": null}
   }
   ,
 
-  generateResponse: {
-    system: `Eres un asistente amigable que ayuda a recolectar información de registro.
-Mantén un tono profesional pero cercano. Usa emojis cuando sea apropiado.
-Sé claro y conciso en tus respuestas.`,
-
-    user: `Genera una respuesta apropiada para el siguiente contexto:
-    
-Información actual:
-- Nombre : {hasName}
-- Email : {hasEmail}
-- {{type}} : {hasIncidencia}
-- Local : {hasLocal}
-
-Genera un mensaje apropiado que:
-1. Si faltan todos los datos: Solicita todo de forma amigable
-2. Si falta solo el nombre: Agradece y solicita el nombre
-3. Si falta solo el email: Usa el nombre para personalizar y solicita el email, si hay exiete el nombre solo Agradece
-4. Si falta solo el {{type}}: Usa el nombre para personalizar y solicita el {{type}} , si hay exiete el nombre solo Agradece
-5. Si falta solo el Local: Usa el nombre para personalizar y solicita el Local, si hay exiete el nombre solo Agradece
-9. Si están completos: Confirma el registro exitoso
-
-Responde :
-SOLO una respuesta unica y precesa
-SOLO el mensaje para el usuario, sin formato JSON.`
-  },
   confirmation: {
     system: `Eres un asistente amigable que ayuda a confirmar que todos los datos estan correctos.
 Mantén un tono profesional pero cercano. Usa emojis cuando sea apropiado.
