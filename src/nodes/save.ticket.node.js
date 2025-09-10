@@ -52,6 +52,8 @@ export async function saveticketNode(state) {
 
     if (state.typeclass === 'reclamos' || state.typeclass === 'servicios_internos' || state.typeclass === 'informacion') {
       logger.debug("=====SAVE ZENDESK=====");
+      const isProduction =
+        process.env.ZENDESK_PROD === 'true'? true : false;
       clasificacion = await getClasificacionzendesk(state.incidencia);
       const respuesta = await zendeskTest(
         state.userEmail,
@@ -60,7 +62,7 @@ export async function saveticketNode(state) {
         clasificacion.categoria,
         state.isUrgente+'| Se Reporto (' + clasificacion.categoria + ')',
         state.incidencia,
-        false,//False para desarrollo
+        isProduction,//False para desarrollo
         null,
         state.localId,
         true // true para guardar en log_ticket
