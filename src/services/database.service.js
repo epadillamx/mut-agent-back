@@ -177,8 +177,8 @@ export async function createTicketDb(state, idfracttal,estado) {
 
       // Crear el ticket
       const insertTicketQuery = `
-          INSERT INTO whatsapp_tickets (user_id, descripcion, urgencia, categoria,idfracttal,estado)
-          VALUES ($1, $2, $3, $4,$5,$6)
+          INSERT INTO whatsapp_tickets (user_id, descripcion, urgencia, categoria,idfracttal,estado,sessionid)
+          VALUES ($1, $2, $3, $4,$5,$6,$7)
           RETURNING id
         `;
       const ticketResult = await client.query(insertTicketQuery, [
@@ -187,7 +187,8 @@ export async function createTicketDb(state, idfracttal,estado) {
         state.isUrgente,
         state.clasificacion,
         idfracttal,
-        estado
+        estado,
+        state.sessionId
       ]);
 
 
