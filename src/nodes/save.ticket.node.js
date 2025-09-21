@@ -50,7 +50,7 @@ export async function saveticketNode(state) {
       user_type: 'HUMAN_RESOURCES',
     };
 
-    if (state.typeclass === 'reclamos' || state.typeclass === 'servicios_internos' || state.typeclass === 'informacion') {
+    if (state.typeclass === 'reclamos' || state.typeclass === 'servicios_internos' || state.typeclass === 'informacion'|| state.typeclass === 'seguridadlocal') {
       logger.debug("=====SAVE ZENDESK=====");
       const isProduction =
         process.env.ZENDESK_PROD === 'true'? true : false;
@@ -70,6 +70,7 @@ export async function saveticketNode(state) {
       logger.debug(JSON.stringify(respuesta, null, 2));
       numero = respuesta.ticketId;
       await createTicketDb(state, numero, 'Abierto');
+      
 
     } else {
       logger.debug("=====SAVE Fracttal=====");

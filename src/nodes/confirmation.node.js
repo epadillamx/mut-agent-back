@@ -37,7 +37,7 @@ export async function confirmationNode(state) {
       };
     }
     let type = 'Incidencia';
-    if (state.typeclass==='reclamos'||state.typeclass==='servicios_internos'||state.typeclass==='informacion'||state.typeclass==='operacional') {
+    if (state.typeclass==='reclamos'||state.typeclass==='servicios_internos'||state.typeclass==='informacion'||state.typeclass==='operacional'|| state.typeclass === 'seguridadlocal') {
       type = 'Operativa';
     }
 

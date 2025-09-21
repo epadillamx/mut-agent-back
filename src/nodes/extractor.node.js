@@ -39,7 +39,9 @@ export async function extractorNode(state) {
         const resultlocalerroneo = JSON.parse(response);
         logger.debug("extractLocal", JSON.stringify(result, null, 2));
         if (resultlocalerroneo.userLocal.length != 0) {
-          result.userLocal = resultlocalerroneo.userLocal;
+          if (resultlocalerroneo.userLocal.toUpperCase() != 'NULL') {
+            result.userLocal = resultlocalerroneo.userLocal;
+          }
         }
       } catch (error) {
         logger.warn("No existe Nombre");
@@ -65,7 +67,9 @@ export async function extractorNode(state) {
         try {
           const resultname = JSON.parse(response_name);
           if (resultname.userName.length != 0) {
-            result.userName = resultname.userName;
+            if (resultname.userName.toUpperCase() != 'NULL') {
+              result.userName = resultname.userName;
+            }
           }
         } catch (error) {
           logger.warn("No existe Nombre");
@@ -83,7 +87,7 @@ export async function extractorNode(state) {
         try {
           const result_incidencia = JSON.parse(response);
           logger.debug("extractInfo", JSON.stringify(result_incidencia, null, 2));
-          if (result_incidencia.texto.length != 0 && result_incidencia.categoria!='otro') {
+          if (result_incidencia.texto.length != 0 && result_incidencia.categoria != 'otro') {
             result.incidencia = result_incidencia.texto;
             result.isUrgente = result_incidencia.isUrgente;
             state.typeclass = result_incidencia.categoria;
@@ -98,15 +102,17 @@ export async function extractorNode(state) {
         logger.debug("BUSCAR LOCAL")
         logger.debug("input", input)
         const template = Handlebars.compile(PROMPT_TEMPLATES.extractLocal.user);
-        const input_mayus=input.toUpperCase();
+        const input_mayus = input.toUpperCase();
         const USER = template({ input_mayus });
         const response = await invokeClaude(USER, PROMPT_TEMPLATES.extractLocal.system);
         try {
           const resultlocal = JSON.parse(response);
           logger.debug("extractLocal", JSON.stringify(resultlocal, null, 2));
           if (resultlocal.userLocal.length != 0) {
-            result.userLocal = resultlocal.userLocal;
-            state.tipo_error = TIPO_ERROR.VALIDAR_LOCAL;
+            if (resultlocal.userLocal.toUpperCase() != 'NULL') {
+              result.userLocal = resultlocal.userLocal;
+              state.tipo_error = TIPO_ERROR.VALIDAR_LOCAL;
+            }
           }
         } catch (error) {
           logger.warn("No existe Local");
