@@ -16,7 +16,7 @@ export async function accumulateMessage(userId, messageText) {
         
         // Reiniciar timer
         clearTimeout(typingTimers.get(userId).timer);
-        const timer = setTimeout(() => finishUser(userId), 5000);
+        const timer = setTimeout(() => finishUser(userId), 3000);
         
         typingTimers.set(userId, { 
             timer, 
@@ -40,7 +40,7 @@ export async function accumulateMessage(userId, messageText) {
     
     userResolvers.set(userId, resolveFunction);
     
-    const timer = setTimeout(() => finishUser(userId), 5000);
+    const timer = setTimeout(() => finishUser(userId), 3000);
     
     typingTimers.set(userId, { timer, promise });
     
