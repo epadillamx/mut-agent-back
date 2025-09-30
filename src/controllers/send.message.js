@@ -49,6 +49,10 @@ export async function MarkStatusMessage(message_id) {
 
 export async function sendMessage(phone, userMessage) {
     try {
+
+        console.log(`===================RESPUESTA==================`);
+        console.log(`RESPUESTA ${phone}:`, userMessage);
+
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", `Bearer ${process.env.TOKEN_WHATS}`);

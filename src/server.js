@@ -87,6 +87,8 @@ app.post('/webhook', async (req, res) => {
                 const messageId = message.id;
                 try {
                   MarkStatusMessage(messageId);
+                  console.log(`===================MENSAJE==================`);
+                  console.log(`Recibido de ${from}:`, messageBody);
                   const messagePromise = accumulateMessage(from, messageBody);
                   if (messagePromise) {
                     messagePromise
