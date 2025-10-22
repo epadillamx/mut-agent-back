@@ -51,8 +51,9 @@ export async function saveticketNode(state) {
     };
 
     if (state.typeclass === 'reclamos' || state.typeclass === 'servicios_internos' || state.typeclass === 'informacion'|| state.typeclass === 'seguridadlocal') {
-      logger.debug("=====SAVE ZENDESK=====");
-      const isProduction =true ; // Cambiar a true para entorno de producción
+      logger.debug("=====SAVE ZENDESK FIX=====");
+      const isProduction =
+        process.env.ZENDESK_PROD === 'true'? true : false;
       clasificacion = await getClasificacionzendesk(state.incidencia);
       const respuesta = await zendeskTest(
         state.userEmail,
