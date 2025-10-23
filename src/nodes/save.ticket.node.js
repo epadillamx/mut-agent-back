@@ -50,8 +50,8 @@ export async function saveticketNode(state) {
       user_type: 'HUMAN_RESOURCES',
     };
 
-    if (state.typeclass === 'reclamos' || state.typeclass === 'servicios_internos' || state.typeclass === 'informacion'|| state.typeclass === 'seguridadlocal') {
-      logger.debug("=====SAVE ZENDESK FIX=====");
+    if (state.typeclass === 'reclamos' || state.typeclass === 'servicios_internos' || state.typeclass === 'informacion'|| state.typeclass === 'seguridadlocal'|| state.typeclass === 'alertaslocales') {
+      logger.debug("=====SAVE ZENDESK =====");
       const isProduction =
         process.env.ZENDESK_PROD === 'true'? true : false;
       clasificacion = await getClasificacionzendesk(state.incidencia);
@@ -84,6 +84,7 @@ export async function saveticketNode(state) {
         numero = saveApi.data[0].id;
         await createTicketDb(state, numero, 'Abierto');
       }
+ 
     }
 
     const template = Handlebars.compile(CONSTANTES.messages.final);

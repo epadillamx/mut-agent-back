@@ -66,16 +66,16 @@ Analiza el texto y extrae ÚNICAMENTE nombres completos de personas reales que c
 </test_cases>`
   },
   extractInfo: {
-    system: `Eres un asistente especializado en extraer información de incidencidencias en en centro comercial.
-            Tu tarea es identificar y extraer, incidentes del texto y categorizarlo como Urgente, Media o Normal.
+    system: `Eres un asistente especializado en extraer información de incidencias en un centro comercial.
+            Tu tarea es identificar y extraer incidentes del texto y categorizarlo como Urgente, Media o Normal.
             Reglas:
             - La incidencia debe ser una descripción clara y a detalle por ejemplo "El aire acondicionado del pasillo no funciona"
             - Responde SOLO en formato JSON
             - Si no encuentras la información, usa null
-            - Descartar incidencias como cambio de nombre , cambio de email ,cambio de local 
-            - Decartar incidencias como mi email es incorrecto mi nombre es incorrecto mi local es incorrecto
-            - Solo debes de detectar incidecias o preguntas operativas  de los locales ejemplo "que día son los eventos a que hora abren
-            - Extre Preguntas Operativas
+            - Descartar incidencias como cambio de nombre, cambio de email, cambio de local 
+            - Descartar incidencias como mi email es incorrecto mi nombre es incorrecto mi local es incorrecto
+            - Solo debes de detectar incidencias o preguntas operativas de los locales ejemplo "que día son los eventos a que hora abren"
+            - Extrae Preguntas Operativas
             <contexto>
                 El texto solo puede estar clasificado exclusivamente en incidencias, eventos y consultas relacionadas con las operaciones de un centro comercial y sus locales (tiendas, restaurantes, áreas comunes, etc.).
             </contexto>
@@ -230,8 +230,34 @@ Analiza el texto y extrae ÚNICAMENTE nombres completos de personas reales que c
                   </ejemplos>
                 </categoria>
                 <categoria>
+                  <nombre>alertaslocales</nombre>
+                  <descripcion>
+                      Notificaciones o avisos preventivos que los locatarios comunican a la administración del centro comercial sobre cambios en sus horarios de operación, cierres temporales, aperturas anticipadas o tardías, y cualquier modificación planificada en su funcionamiento regular. Son comunicaciones informativas que no reportan problemas, sino cambios programados en la operación del local.
+                  </descripcion>
+                  <palabras_clave>
+                      cerraremos, abriremos, cierre anticipado, cierre temprano, apertura tardía, nos retiramos, saldremos, horario modificado, cambio de horario, cerrado por, abierto hasta
+                  </palabras_clave>
+                  <ejemplos>
+                      - "Quería avisar que hoy cerraremos la tienda más temprano, nos retiraremos a las 15:00 horas"
+                      - "Les informo que mañana abriremos el local a las 11:00 en lugar de las 9:00"
+                      - "El día de hoy cerraremos dos horas antes por motivos internos"
+                      - "Aviso que este fin de semana el local estará cerrado por inventario"
+                      - "Notificamos que saldremos a las 16:30 hoy en lugar del horario habitual"
+                      - "Informamos cierre anticipado del local hoy a las 14:00 horas"
+                      - "Les comunico que hoy cerraré el negocio a las 17:00"
+                      - "Aviso que mañana no abriremos hasta las 12:00 del mediodía"
+                      - "El local cerrará una hora antes hoy por capacitación del personal"
+                      - "Notificación: cerraremos temprano hoy a las 18:00 por reunión de equipo"
+                      - "Informo que el próximo lunes el local permanecerá cerrado"
+                      - "Aviso de cierre anticipado por evento corporativo a las 15:30"
+                      - "Hoy nos retiraremos más temprano, cerramos a las 16:00"
+                      - "Les informamos que abriremos dos horas más tarde de lo normal"
+                      - "Modificación de horario: hoy cerraremos a las 19:00 en lugar de las 21:00"
+                  </ejemplos>
+                </categoria>
+                <categoria>
                       <nombre>otro</nombre>
-                      <descripcion>Cualquier mensaje que no corresponda a incidencias, solicitudes operacionales, servicios internos o consultas de información relacionadas con el centro comercial. Incluye conversaciones generales, preguntas no relacionadas con las operaciones del edificio, saludos, consultas externas al contexto comercial y cualquier comunicación que esté fuera del ámbito de gestión del centro comercial.</descripcion>
+                      <descripcion>Cualquier mensaje que no corresponda a incidencias, solicitudes operacionales, servicios internos, alertas de local o consultas de información relacionadas con el centro comercial. Incluye conversaciones generales, preguntas no relacionadas con las operaciones del edificio, saludos, consultas externas al contexto comercial y cualquier comunicación que esté fuera del ámbito de gestión del centro comercial.</descripcion>
                       <ejemplos>
                           - "Hola, ¿cómo estás?"
                           - "¿Cuál es la capital de Francia?"
@@ -260,9 +286,9 @@ Analiza el texto y extrae ÚNICAMENTE nombres completos de personas reales que c
           "{{input}}"
           Responde ÚNICAMENTE con este formato JSON:
           {
-            "texto": "mejora el texto en base a la categoria  que pertenece y mejora la redaccion",
-            "categoria": "retornar la categoria que pertenece el texto solo pueden ser reclamos,servicios_internos,operacional,otro,incidencia,informacion",
-            "isUrgente": "coloca Urgente si la incidecnia es urgente , colocar Media si la indecia esta controlada , colocar Normal si no es urgente ni controlada"
+            "texto": "mejora el texto en base a la categoria que pertenece y mejora la redacción",
+            "categoria": "retornar la categoria que pertenece el texto solo pueden ser reclamos,servicios_internos,operacional,otro,incidencia,informacion,seguridadlocal,alertaslocales",
+            "isUrgente": "coloca Urgente si la incidencia es urgente, colocar Media si la incidencia esta controlada, colocar Normal si no es urgente ni controlada"
           }`
   },
   extractLocal: {
