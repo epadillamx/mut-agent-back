@@ -31,7 +31,7 @@ export async function saveticketNode(state) {
       types_description = clasificacion.nombre_nivel_3;
       types_1_description = clasificacion.nombre_nivel_1;
       types_2_description = clasificacion.nombre_nivel_2;
-      state.clasificacion = types_description;
+      state.clasificacion = types_1_description+" > "+types_2_description+" > "+types_description;
     }
 
     const oneMinuteAgoUTC = () => new Date(Date.now() - 60000).toISOString();
