@@ -31,6 +31,9 @@ export class FracttalService {
 
 
     try {
+      console.log(`*****FRACTAL***`);
+      console.log(`${this.baseUrl}/work_requests/`);
+      console.log(JSON.stringify(payload, null, 2));
       const response = await fetch(`${this.baseUrl}/work_requests/`, {
         method: 'POST',
         headers: {
