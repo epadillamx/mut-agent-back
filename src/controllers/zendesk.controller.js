@@ -56,6 +56,9 @@ export async function zendeskTest(
     });
 
     // 4) Crear ticket en Zendesk
+    console.log(`*****Zendesk***`);
+    console.log("DATA TICKET: https://territoria.zendesk.com/api/v2");
+    console.log(JSON.stringify(ticketData, null, 2));
     const created = await createZendeskTicket(ticketData);
     const ticketId = created?.id ?? null;
 

@@ -136,9 +136,12 @@ export async function getClasificacionsql() {
 
 
 export async function createTicketDb(state, idfracttal,estado) {
+  let client;
   try {
-    const client = await dbPool.connect();
-
+    client = await dbPool.connect();
+    let queryExecuted = '';
+    let valuesExecuted = [];
+    
     try {
       await client.query('BEGIN');
 
@@ -146,25 +149,37 @@ export async function createTicketDb(state, idfracttal,estado) {
 
       // Si es usuario nuevo, crearlo primero
       if (state.userNew && !userId) {
-        const insertUserQuery = `
+        queryExecuted = `
             INSERT INTO whatsapp_usuarios (nombre, email, local_id, phone,nombre_local,fractal_code)
             VALUES ($1, $2, $3, $4,$5,$6)
             RETURNING id
           `;
-        const userResult = await client.query(insertUserQuery, [
+        valuesExecuted = [
           state.userName,
           state.userEmail,
           state.localId,
           state.userPhone,
           state.userLocal,
           state.fractal_code
-        ]);
-        userId = userResult.rows[0].id;
+        ];
+        
+        try {
+          const userResult = await client.query(queryExecuted, valuesExecuted);
+          userId = userResult.rows[0].id;
+        } catch (error) {
+          logger.error('Error creando usuario nuevo:', { 
+            error: error.message, 
+            stack: error.stack,
+            query: queryExecuted, 
+            values: valuesExecuted 
+          });
+          throw error;
+        }
       } else {
-        const insertUserQuery = `
+        queryExecuted = `
             UPDATE whatsapp_usuarios SET nombre=$1, email=$2, local_id=$3, phone=$4,nombre_local=$5,fractal_code=$6 where id=$7
           `;
-         await client.query(insertUserQuery, [
+        valuesExecuted = [
           state.userName,
           state.userEmail,
           state.localId,
@@ -172,16 +187,28 @@ export async function createTicketDb(state, idfracttal,estado) {
           state.userLocal,
           state.fractal_code,
           userId
-        ]);
+        ];
+        
+        try {
+          await client.query(queryExecuted, valuesExecuted);
+        } catch (error) {
+          logger.error('Error actualizando usuario existente:', { 
+            error: error.message, 
+            stack: error.stack,
+            query: queryExecuted, 
+            values: valuesExecuted 
+          });
+          throw error;
+        }
       }
 
       // Crear el ticket
-      const insertTicketQuery = `
+      queryExecuted = `
           INSERT INTO whatsapp_tickets (user_id, descripcion, urgencia, categoria,idfracttal,estado,sessionid)
           VALUES ($1, $2, $3, $4,$5,$6,$7)
           RETURNING id
         `;
-      const ticketResult = await client.query(insertTicketQuery, [
+      valuesExecuted = [
         userId,
         state.incidencia,
         state.isUrgente,
@@ -189,31 +216,64 @@ export async function createTicketDb(state, idfracttal,estado) {
         idfracttal,
         estado,
         state.sessionId
-      ]);
+      ];
+      
+      let ticketResult;
+      try {
+        ticketResult = await client.query(queryExecuted, valuesExecuted);
+      } catch (error) {
+        logger.error('Error creando ticket:', { 
+          error: error.message, 
+          stack: error.stack,
+          query: queryExecuted, 
+          values: valuesExecuted 
+        });
+        throw error;
+      }
 
-
-      const queryUpdate = `
+      queryExecuted = `
       UPDATE whatsapp_conversations 
       SET user_id = $1, updated_at = NOW(), completed_at = NOW(),ticket_id=$2
       WHERE session_id = $3
     `;
-      await client.query(queryUpdate, [
+      valuesExecuted = [
         userId,
         ticketResult.rows[0].id,
         state.sessionId
-      ]);
+      ];
+      
+      try {
+        await client.query(queryExecuted, valuesExecuted);
+      } catch (error) {
+        logger.error('Error actualizando conversación:', { 
+          error: error.message, 
+          stack: error.stack,
+          query: queryExecuted, 
+          values: valuesExecuted 
+        });
+        throw error;
+      }
 
       await client.query('COMMIT');
       return ticketResult.rows[0].id;
 
     } catch (error) {
       await client.query('ROLLBACK');
+      logger.error('Error en transacción (ROLLBACK ejecutado):', { 
+        error: error.message, 
+        stack: error.stack,
+        lastQuery: queryExecuted,
+        lastValues: valuesExecuted
+      });
       throw error;
     } finally {
       client.release();
     }
   } catch (error) {
-    console.error('Error creando ticket:', error);
+    logger.error('Error creando ticket (error de conexión):', { 
+      error: error.message, 
+      stack: error.stack 
+    });
     throw error;
   }
 }
