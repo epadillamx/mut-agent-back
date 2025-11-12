@@ -60,7 +60,7 @@ export async function saveticketNode(state) {
         state.userName,
         '-',
         clasificacion.categoria,
-        state.isUrgente+'| Se Reporto (' + clasificacion.categoria + ')',
+        state.isUrgente+'| Se Reporto (' + clasificacion.categoria + ')| '+state.userLocal,
         state.incidencia,
         isProduction,//False para desarrollo
         null,
