@@ -58,14 +58,32 @@ export async function checkUserDb(email) {
 }
 
 /**
+ * Normaliza texto quitando tildes/acentos para búsquedas más flexibles
+ * @param {string} text - Texto a normalizar
+ * @returns {string} - Texto sin tildes
+ */
+function normalizeText(text) {
+  return text
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toUpperCase()
+    .trim();
+}
+
+/**
  * Valida una ubicación en la base de datos
+ * Utiliza normalización de acentos para encontrar locales como "PLAZA MÚSICA" 
+ * aunque el usuario escriba "plaza musica" sin tilde
  * @param {string} location - Nombre de la ubicación
  * @returns {Promise<Object>} - Objeto con exact y locations
  */
 export async function validateLocationDb(location) {
   try {
-    // Búsqueda exacta primero
-    //let query = 'SELECT id, nombre_local FROM locales WHERE nombre_local ILIKE $1';
+    // Normalizar búsqueda (quitar tildes del input del usuario)
+    const normalizedLocation = normalizeText(location);
+    
+    // Query con translate() para normalizar también los valores en BD
+    // Esto permite matchear "MUSICA" con "MÚSICA"
     let query = `select l."nombreComercial" as nombre,
                       ul."fracttalCode"   as fractal_code,
                       l.id                as locatarioId,
@@ -76,13 +94,12 @@ export async function validateLocationDb(location) {
                from locatario l
                         inner join contrato c on l.id = c."locatarioId"
                         inner join unidad_locativa ul on ul."codigoLocal" = c."unidadLocativaCodigoLocal"
-               where l."nombreComercial" ILIKE $1
+               where translate(upper(l."nombreComercial"), 'ÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÂÊÎÔÛÃÕÑ', 'AEIOUAEIOUAEIOUAEIOUAON') ILIKE $1
                  and c.status = 1
                  and ul."fracttalCode" is not null
                  and c."centroComercial" in ('RETAIL', 'OFICINAS', 'RETAILNOVENTAS')`;
 
-
-    let result = await dbPool.query(query, [`%${location.trim()}%`]);
+    let result = await dbPool.query(query, [`%${normalizedLocation}%`]);
 
     if (result.rows.length > 0) {
       return { exact: true, locations: result.rows };
